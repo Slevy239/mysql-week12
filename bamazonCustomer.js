@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "David239",
+    password: "",
     database: "bamazon",
     insecureAuth: true
 });
@@ -25,19 +25,19 @@ function afterConnection() {
     })
 }
 
-var display = function() {
-    var query = "Select * from products";
-    connection.query(query, function(err, res) {
-        if (err) throw (err);
-        var displayTable = new Table ({
-            head: ["Item Id", "Product Name", "Category", "Price", "Qunatity"],
-            colWidths: [10,25,25,10,14]
-        });
-        for (var i = 0; i < res.length; i++) {
-            displayTable.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
-        }
-        console.log(displayTable.toString());
+// var display = function() {
+//     var query = "Select * from products";
+//     connection.query(query, function(err, res) {
+//         if (err) throw (err);
+//         var displayTable = new Table ({
+//             head: ["Item Id", "Product Name", "Category", "Price", "Qunatity"],
+//             colWidths: [10,25,25,10,14]
+//         });
+//         for (var i = 0; i < res.length; i++) {
+//             displayTable.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
+//         }
+//         console.log(displayTable.toString());
 
-    })
-}
-display();
+//     })
+// }
+// display();
