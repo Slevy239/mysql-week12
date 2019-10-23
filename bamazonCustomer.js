@@ -37,10 +37,10 @@ var display = function () {
             displayTable.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity])
         }
         console.log(displayTable.toString());
+        productID();
 
     })
 }
-display();
 
 function productID() {
     inquirer
@@ -50,20 +50,34 @@ function productID() {
             type: "input",
             message: "What product ID would you like to purchase?",
             filter: Number
-        }
+        },
+        {
+            name:"Quantity",
+            type: "input",
+            message: "How Many items would you like to purchase?",
+            filter: Number
+        },
         ])
         .then(function (answer) {
-            connection.query(
-                "INSERT INTO products SET ?",
-                {
-                    stock_quantity: answer.askID,
-                },
-                function (err) {
-                    if (err) throw err;
-                    console.log("Your auction was created successfully!");
-                    display();
-                }
-            )
+            var needed = answer.Quantity;
+            var ID = answer.askID;
+            order(needed, ID);
+        });
+    }
+
+    function order() {
+        connection.query('SELECT * FROM products WHERE item_id = ' + ID, function(err, res) {
+            if (err) throw err;
+            if  (needed <= res[0].stock_quantity) {
+                var cost = res[0].price * needed;
+                console.log("We're in stock!");
+                console.log("Total Cost: $" + cost);
+
+                connection.query("UPDATE products Set stock_quantity = stock_quantity - " + needed + "WHERE item_id = " + ID )
+            } else {
+            console.log("Not enough quantity, we do not have enought " + res[0].product_name + " to complete your order.");
+            };
+            display();
         })
-}
-productID();
+    }
+    display();
