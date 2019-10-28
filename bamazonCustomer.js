@@ -26,7 +26,6 @@ function afterConnection() {
         }
         console.log("---------------------------------------");
         question();
-        // connection.end();
     });
 }
 
@@ -54,7 +53,7 @@ function question() {
                         for (var i = 0; i < res.length; i++) {
                             console.log("There are " + res[i].stock_quantity + " in stock!\n");
                             console.log("You owe $" + res[i].price * answer.quantity);
-                            var updateQuery = 'UPDATE products SET stock_quantity = ' + (res.stock_quantity - quantity) + 'WHERE item_id = ' + answer.askID;
+                            var updateQuery = 'UPDATE products SET stock_quantity = ' + (res.stock_quantity - answer.quantity) + 'WHERE item_id = ' + answer.askID;
                             connection.end();
                         }
                     } else {
@@ -63,7 +62,9 @@ function question() {
                         console.log("Please try again!");
                         connection.end();
                     }
+                    afterConnection();
                 })
         })
+      
 }
 
