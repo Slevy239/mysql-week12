@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var Table = require("cli-table");
+var Table = require("cli-table2");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -14,20 +14,39 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
     if (err) throw (err);
     console.log("Connected as id " + connection.threadId);
-    afterConnection()
 });
-
-function afterConnection() {
-    connection.query("SELECT * FROM products", function (err, res) {
-        if (err) throw (err);
-        console.log(" ID | ITEM NAME   | TYPE   | $     | QUANTITY")
+function display() {
+    connection.query("SELECT * FROM products", function(err, res) {
+if (err) throw err;
+        var table = new Table({
+            head: ["ID", "ITEM NAME", "CATEGORY", "COST", "QUANTITY"],
+            colWidths: [10, 15, 15, 10],
+            colAligns: ["center", "left"],
+            style: {
+                head: ["aqua"],
+                compact: true
+            }
+        });
         for (var i = 0; i < res.length; i++) {
-            console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + res[i].price + " | " + res[i].stock_quantity)
+            table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
         }
-        console.log("---------------------------------------");
+        console.log(table.toString())
         question();
-    });
+    })
 }
+
+
+// function afterConnection() {
+//     connection.query("SELECT * FROM products", function (err, res) {
+//         if (err) throw (err);
+//         console.log(" ID | ITEM NAME   | TYPE   | $     | QUANTITY")
+//         for (var i = 0; i < res.length; i++) {
+//             console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + res[i].price + " | " + res[i].stock_quantity)
+//         }
+//         console.log("---------------------------------------");
+//         question();
+//     });
+// }
 
 function question() {
     inquirer.prompt([
@@ -53,18 +72,24 @@ function question() {
                         for (var i = 0; i < res.length; i++) {
                             console.log("There are " + res[i].stock_quantity + " in stock!\n");
                             console.log("You owe $" + res[i].price * answer.quantity);
-                            var updateQuery = 'UPDATE products SET stock_quantity = ' + (res.stock_quantity - answer.quantity) + 'WHERE item_id = ' + answer.askID;
-                            connection.end();
                         }
+                        var newQuantity = res[0].stock_quantity - answer.quantity;
+                        connection.query("UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + res[0].item_id, function(err, resUpdate) {
+                            if (err) throw err;
+                            console.log("\nINVENTORY UPDATED");
+                            display();
+                            connection.end();
+                        })
                     } else {
                         console.log("\nInsufficient quantity of " + res[0].stock_quantity + "!")
                         console.log("We only have " + res[0].stock_quantity + " in stock!");
                         console.log("Please try again!");
                         connection.end();
                     }
-                    afterConnection();
                 })
         })
-      
+
 }
 
+
+display();
