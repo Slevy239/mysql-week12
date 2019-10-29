@@ -20,4 +20,12 @@ The second prompt will ask the quantity of the item that you are purchasing. Thi
  
  Once both prompts are complete, the database will be updated with the new amount of inventory, which can be seen in the third screenshot: 
 
- ![third screenshot](./screenshots/completeTransactions.png)
+ ![third screenshot](./screenshots/completeTransaction.png)
+
+
+
+ ## MySQL Database
+
+ This screenshot displays the code within the MySQL workbench that sets up the inventory table:
+
+ ![mySQL](./screenshots/mysql.png)
