@@ -2,7 +2,7 @@
 
 ## Setup
 
-For this application to run, MySQL database must be installed on your computer. Once installation is complete, copy the code in the [Bamazon.sql file](../bamazon.sql) and paste it into MySQL Workbench to create the data and table. Following the installation, you will need to find the file location in the terminal and run 'npm i'. this will download all of the dependencies for this application. Afther completion of installs, you will be able to run this application in the terminal.
+For this application to run, MySQL database must be installed on your computer. Once installation is complete, copy the code in the [Bamazon.sql file](../mysql-week12/bamazon.sql) and paste it into MySQL Workbench to create the data and table. Following the installation, you will need to find the file location in the terminal and run 'npm i'. this will download all of the dependencies for this application. Afther completion of installs, you will be able to run this application in the terminal.
 
 ## Getting Started
 
