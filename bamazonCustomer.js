@@ -71,10 +71,11 @@ function question() {
 
                         })
                     } else {
-                        console.log("\nInsufficient quantity of " + res[0].stock_quantity + "!")
-                        console.log("We only have " + res[0].stock_quantity + " in stock!");
-                        console.log("Please try again!");
-                        connection.end();
+                        connection.query("UPDATE products SET stock_quantity = 100 WHERE item_id = " + id, function (err, res) {
+                        console.log("INSUFFICIENT QUANTITY!");
+                        console.log("Please try again!\n");
+                        question();
+                        })
                     }
                 })
         })
@@ -101,6 +102,8 @@ function afterPurchase() {
             }
         })
 }
+
+
 
 
 display();
