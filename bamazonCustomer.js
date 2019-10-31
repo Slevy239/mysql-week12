@@ -3,6 +3,7 @@ var inquirer = require("inquirer");
 var Table = require("cli-table2");
 
 var connection = mysql.createConnection({
+
     host: "localhost",
     port: 3306,
     user: "root",
@@ -11,10 +12,14 @@ var connection = mysql.createConnection({
     insecureAuth: true
 });
 
+
 connection.connect(function (err) {
     if (err) throw (err);
     console.log("Connected as id " + connection.threadId);
 });
+
+
+
 function display() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
@@ -66,7 +71,7 @@ function question() {
                         var newQuantity = res[0].stock_quantity - answer.quantity;
                         connection.query("UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + res[0].item_id, function (err, resUpdate) {
                             if (err) throw err;
-                            console.log("\nINVENTORY UPDATED");
+                            console.log("INVENTORY UPDATED");
                             afterPurchase();
 
                         })
