@@ -69,7 +69,7 @@ function question() {
                             console.log("You owe $" + res[i].price * answer.quantity);
                         }
                         var newQuantity = res[0].stock_quantity - answer.quantity;
-                        connection.query("UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + res[0].item_id, function (err, resUpdate) {
+                        connection.query("UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + res[0].item_id, function (err, res) {
                             if (err) throw err;
                             console.log("INVENTORY UPDATED");
                             afterPurchase();
@@ -78,7 +78,7 @@ function question() {
                     } else {
                         connection.query("UPDATE products SET stock_quantity = 100 WHERE item_id = " + id, function (err, res) {
                         console.log("INSUFFICIENT QUANTITY!");
-                        console.log("Please try again!\n");
+                        console.log("Please try again!");
                         question();
                         })
                     }
